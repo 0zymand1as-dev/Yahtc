@@ -1,11 +1,8 @@
 ---
-# Configuración de clang-format con brackets alineados horizontalmente (estilo Allman)
 BasedOnStyle: LLVM
 
-# Configuración principal de brackets
 BreakBeforeBraces: Allman
 
-# Opciones específicas de brackets
 BraceWrapping:
   AfterClass: true
   AfterControlStatement: Always
@@ -24,14 +21,11 @@ BraceWrapping:
   SplitEmptyRecord: true
   SplitEmptyNamespace: true
 
-# Configuración de indentación
 IndentWidth: 2
 TabWidth: 2
 UseTab: Never
-ColumnLimit: 100
 
-# Otras configuraciones útiles
-AlignAfterOpenBracket: Align
+ColumnLimit: 60
 AlignConsecutiveAssignments: false
 AlignConsecutiveDeclarations: false
 AlignOperands: true
@@ -45,3 +39,6 @@ SpaceAfterCStyleCast: false
 SpaceBeforeAssignmentOperators: true
 SpaceBeforeParens: ControlStatements
 SpacesInParentheses: false
+BinPackArguments: false
+BinPackParameters: false
+AlignAfterOpenBracket: AlwaysBreak
