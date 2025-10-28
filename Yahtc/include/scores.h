@@ -1,13 +1,44 @@
 #pragma once
-#ifndef SCORE_H
-#define SCORE_H
+#ifndef HAND_H
+#define HAND_H
 
-#include <stdlib.h>
+#include <stdint.h>
 
-typedef struct Player Player;
-typedef struct Table Table;
+typedef struct Cup Cup;
 
-Player* evaluate_winner_score(Table* table);
-Player* evaluate_max_score(Table* table);
+enum Hands
+{
+  NONE,
+  ACE,
+  TWO,
+  THREE,
+  FOUR,
+  FIVE,
+  SIX,
+  THREE_OF_A_KIND,
+  FOUR_OF_A_KIND,
+  FULL_HOUSE,
+  SM_STRAIGHT,
+  LG_STRAIGHT,
+  YAHTZEE,
+  CHANCE,
+  HANDS_COUNT,
+};
 
-#endif // SCORE_H
+typedef struct ScoreSheet
+{
+  enum Hands* hands;
+  uint8_t sum;
+  uint8_t bonus;
+  uint8_t yahtzees;
+} ScoreSheet;
+
+uint8_t score_evaluate(
+    const enum Hands selection,
+    const Cup* cup,
+    ScoreSheet* target);
+
+ScoreSheet* score_init(void);
+void score_close(ScoreSheet* target);
+
+#endif // HAND_H

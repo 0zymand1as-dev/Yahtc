@@ -29,19 +29,19 @@ table_sit(Table* target, uint8_t index, Player player)
   return 0;
 }
 
-void table_close(Table* table)
+void table_close(Table* target)
 {
-  if (!table)
+  if (!target)
     return;
 
-  for (uint8_t i = 0; i < table->count; i++)
+  for (uint8_t i = 0; i < target->count; i++)
   {
-    free(table->players[i].hands);
+    score_close(target->players[i].score_sheet);
   }
 
-  free(table->players);
+  free(target->players);
 
-  free(table);
+  free(target);
 
   return;
 }

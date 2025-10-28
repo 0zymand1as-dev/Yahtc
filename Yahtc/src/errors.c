@@ -4,6 +4,6 @@
 
 void memerr(const char* error)
 {
-  fprintf(stderr, "No enough memory left for: %s", error);
+  fprintf(stderr, "No enough memory left for: %s\n", error);
   exit(1);
 }

@@ -1,5 +1,5 @@
 #pragma once
-#include "hands.h"
+#include "./scores.h"
 #ifndef GAME_H
 #define GAME_H
 

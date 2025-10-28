@@ -2,14 +2,14 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "./hands.h"
+#include "./scores.h"
 #include <stdint.h>
 #include <stdlib.h>
 
 typedef struct State State;
 typedef struct Cup Cup;
 
-typedef Hand (*HandSelectionCallback)(
+typedef enum Hands (*HandSelectionCallback)(
     const State*, Cup* cup, void* info);
 
 typedef struct HandSelectionHandler

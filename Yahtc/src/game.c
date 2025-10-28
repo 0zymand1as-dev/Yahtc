@@ -1,5 +1,6 @@
 #include "../include/game.h"
 #include "../include/cup.h"
+#include "../include/errors.h"
 #include "../include/player.h"
 #include <stdio.h>
 
@@ -8,8 +9,7 @@ State* game_init(Rules* rules)
   State* new_state = (State*)malloc(sizeof(State));
   if (!new_state)
   {
-    fprintf(stderr, "No enough memory\n");
-    exit(1);
+    memerr("game state");
   }
 
   new_state->table = table_init(rules->players_count);
@@ -32,13 +32,11 @@ uint8_t game_sit_player(
     uint8_t position,
     HandSelectionHandler* menu)
 {
-  uint8_t* player_hands =
-      (uint8_t*)calloc(HANDS_COUNT, sizeof(uint8_t));
+  ScoreSheet* player_score_sheet = score_init();
 
-  if (!player_hands)
+  if (!player_score_sheet)
   {
-    fprintf(stderr, "No enough memory\n");
-    exit(1);
+    memerr("player score sheet");
   }
 
   return table_sit(
@@ -46,7 +44,7 @@ uint8_t game_sit_player(
       position,
       (Player){.play_menu = menu,
                .score = 0,
-               .hands = player_hands});
+               .score_sheet = player_score_sheet});
 }
 
 void game_start(State* target, MenuHandler* menu)
@@ -101,7 +99,7 @@ void game_round(State* target, MenuHandler* menu)
 {
   HandSelectionHandler* play_menu =
       target->current_player->play_menu;
-  Hand current_hand;
+  enum Hands current_hand;
 
   do
   {
@@ -111,23 +109,10 @@ void game_round(State* target, MenuHandler* menu)
   } while (current_hand == NONE &&
            target->rerolls_left-- > 0);
 
-  if (current_hand == NONE)
-  {
-    fprintf(
-        stderr,
-        "bad usage of the Yahtc api: After spending all "
-        "rerolls, HandSelectionCallback should return "
-        "no-NONE hand");
-    exit(1);
-  }
-
-  int8_t score = hand_evaluate(
+  target->current_player->score = score_evaluate(
       current_hand,
-      target->current_player->hands,
-      target->cup);
-
-  target->current_player->hands[current_hand] = score;
-  target->current_player->score += score;
+      target->cup,
+      target->current_player->score_sheet);
 
   if (menu)
     menu->function(target, menu->info);
