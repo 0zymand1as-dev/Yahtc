@@ -13,7 +13,9 @@ State* game_init(Rules* rules)
   }
 
   new_state->table = table_init(rules->players_count);
-  new_state->cup = cup_init(rules->dices_count);
+
+  new_state->cup =
+      cup_init(rules->dices_count, rules->dices_faces);
 
   new_state->rules = rules;
   new_state->round = 0;
@@ -109,7 +111,7 @@ void game_round(State* target, MenuHandler* menu)
   } while (current_hand == NONE &&
            target->rerolls_left-- > 0);
 
-  target->current_player->score = score_evaluate(
+  target->current_player->score += score_evaluate(
       current_hand,
       target->cup,
       target->current_player->score_sheet);

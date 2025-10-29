@@ -1,4 +1,5 @@
 #include "../include/scores.h"
+#include "../include/cup.h"
 #include "../include/errors.h"
 #include <stdlib.h>
 
@@ -7,8 +8,35 @@ uint8_t score_evaluate(
     const Cup* cup,
     ScoreSheet* target)
 {
+  if (!cup || !target)
+    return -1;
 
-  return -1;
+  uint8_t score = 0;
+
+  switch (selection)
+  {
+  case ACE:
+  case TWO:
+  case THREE:
+  case FOUR:
+  case FIVE:
+  case SIX:
+  case THREE_OF_A_KIND:
+  case FOUR_OF_A_KIND:
+  case FULL_HOUSE:
+  case SM_STRAIGHT:
+  case LG_STRAIGHT:
+  case YAHTZEE:
+  case CHANCE:
+    target->hands[selection] = score;
+    break;
+
+  case NONE:
+  case HANDS_COUNT:
+    return -1;
+  }
+
+  return score;
 }
 
 ScoreSheet* score_init(void)
@@ -21,6 +49,7 @@ ScoreSheet* score_init(void)
 
   new_score_sheet->hands =
       calloc(HANDS_COUNT, sizeof(enum Hands));
+
   if (!new_score_sheet)
     memerr("hands in scoresheet");
 

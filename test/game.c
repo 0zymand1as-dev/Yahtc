@@ -4,10 +4,10 @@
 
 void initial_menu(const State*, void* screen);
 
-Hand player_select_hand(
+enum Hands player_select_hand(
     const State* state, Cup* cup, void* screen);
 
-Hand ai_select_hand(const State*, Cup* cup, void* screen);
+enum Hands ai_select_hand(const State*, Cup* cup, void* screen);
 
 int main(void)
 {
@@ -15,7 +15,7 @@ int main(void)
 
   Rules rules = {
       .players_count = 2,
-      .max_round = 13,
+      .max_round = 4,
       .winner_score = 250,
       .rerolls = 3,
       .dices_count = 6,
@@ -70,14 +70,14 @@ void initial_menu(const State* state, void* screen)
     printf(
         "Hand in %d: %d\n",
         i + 1,
-        state->current_player->hands[i]);
+        state->current_player->score_sheet->hands[i]);
   }
   getchar();
 
   return;
 }
 
-Hand ai_select_hand(
+enum Hands ai_select_hand(
     const State* state, Cup* cup, void* screen)
 {
   if (!state || !cup)
@@ -92,7 +92,7 @@ Hand ai_select_hand(
   return FULL_HOUSE;
 }
 
-Hand player_select_hand(
+enum Hands player_select_hand(
     const State* state, Cup* cup, void* screen)
 {
   if (!state || !cup)

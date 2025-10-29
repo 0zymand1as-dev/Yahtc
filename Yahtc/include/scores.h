@@ -39,6 +39,7 @@ uint8_t score_evaluate(
     ScoreSheet* target);
 
 ScoreSheet* score_init(void);
+
 void score_close(ScoreSheet* target);
 
 #endif // HAND_H
