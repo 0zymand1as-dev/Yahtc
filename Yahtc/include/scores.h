@@ -5,6 +5,7 @@
 #include <stdint.h>
 
 typedef struct Cup Cup;
+typedef struct Rules Rules;
 
 enum Hands
 {
@@ -34,6 +35,7 @@ typedef struct ScoreSheet
 } ScoreSheet;
 
 uint8_t score_evaluate(
+    const Rules* rules,
     const enum Hands selection,
     const Cup* cup,
     ScoreSheet* target);

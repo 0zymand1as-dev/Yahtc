@@ -1,9 +1,11 @@
 #include "../include/scores.h"
 #include "../include/cup.h"
 #include "../include/errors.h"
+#include "../include/game.h"
 #include <stdlib.h>
 
 uint8_t score_evaluate(
+    const Rules* rules,
     const enum Hands selection,
     const Cup* cup,
     ScoreSheet* target)
@@ -21,14 +23,44 @@ uint8_t score_evaluate(
   case FOUR:
   case FIVE:
   case SIX:
+    score +=
+        cup_get_value_count(cup, selection) * selection;
+    target->sum += score;
+    break;
+
   case THREE_OF_A_KIND:
+    score += cup_get_repeted(cup, 3)
+                 ? cup_get_total_value(cup)
+                 : 0;
+
   case FOUR_OF_A_KIND:
+    score += cup_get_repeted(cup, 4)
+                 ? cup_get_total_value(cup)
+                 : 0;
+    break;
+
   case FULL_HOUSE:
+    score += cup_get_full_house(cup) ? 25 : 0;
+    break;
+
   case SM_STRAIGHT:
+    score += cup_get_straight(cup, rules->sstraight_count)
+                 ? 30
+                 : 0;
+    break;
+
   case LG_STRAIGHT:
+    score += cup_get_straight(cup, rules->lstraight_count)
+                 ? 40
+                 : 0;
+    break;
+
   case YAHTZEE:
+    score = cup_get_all_equal(cup);
+    break;
+
   case CHANCE:
-    target->hands[selection] = score;
+    score = cup_get_total_value(cup);
     break;
 
   case NONE:

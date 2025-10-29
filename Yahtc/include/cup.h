@@ -16,19 +16,21 @@ typedef struct Cup
 {
   Dice* dices;
   size_t count;
-  uint8_t faces;
+  uint8_t faces; // This never can be zero
 } Cup;
 
-uint16_t cup_get_total_value(Cup* target);
+bool cup_get_all_equal (const Cup* target);
+
+bool cup_get_repeted (const Cup* target, size_t times);
+
+uint16_t cup_get_total_value(const Cup* target);
 
 size_t
-cup_get_value_count(Cup* target, uint8_t dice_number);
+cup_get_value_count(const Cup* target, uint8_t dice_number);
 
-uint8_t cup_get_lstraight(Cup* target);
+uint8_t cup_get_straight(const Cup* target, uint8_t s_count);
 
-uint8_t cup_get_sstraight(Cup* target);
-
-bool cup_get_full_house(Cup* target);
+bool cup_get_full_house(const Cup* target);
 
 void cup_throw(Cup* target);
 

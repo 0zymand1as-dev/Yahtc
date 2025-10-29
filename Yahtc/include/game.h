@@ -14,8 +14,10 @@ typedef struct Rules
   uint8_t max_round;
   uint16_t winner_score;
   uint8_t rerolls;
-  uint8_t dices_count;
+  size_t dices_count;
   uint8_t dices_faces;
+  uint8_t sstraight_count;
+  uint8_t lstraight_count;
 } Rules;
 
 typedef struct State

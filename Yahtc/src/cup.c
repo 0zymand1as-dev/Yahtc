@@ -5,7 +5,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-uint16_t cup_get_total_value(Cup* target)
+bool cup_get_all_equal(const Cup* target)
+{
+  if (!target || !target->dices)
+    return false;
+
+  uint8_t value = target->dices[0].value;
+
+  for (size_t i = 0; i < target->count; i++)
+  {
+    if (target->dices[i].value != value)
+      return false;
+  }
+
+  return true;
+}
+
+uint16_t cup_get_total_value(const Cup* target)
 {
   if (!target || !target->dices)
     return 0;
@@ -21,7 +37,7 @@ uint16_t cup_get_total_value(Cup* target)
 }
 
 size_t
-cup_get_value_count(Cup* target, uint8_t dice_number)
+cup_get_value_count(const Cup* target, uint8_t dice_number)
 {
   size_t count = 0;
 
@@ -33,61 +49,18 @@ cup_get_value_count(Cup* target, uint8_t dice_number)
   return count;
 }
 
-uint8_t cup_get_lstraight(Cup* target)
+uint8_t cup_get_straight(const Cup* target, uint8_t s_count)
 {
-  if (!target || !target->dices || target->count < 5)
+  if (!target || !target->dices || target->count < s_count)
     return 0;
-
-  cup_sort(target);
 
   Dice* dices = target->dices;
   uint8_t count = 1;
 
-  for (size_t i = 1; i < target->count; i++)
-  {
-    if (dices[i].value == dices[i - 1].value + 1)
-    {
-      count++;
-      if (count == 5)
-        return dices[i - count + 1].value;
-    }
-    else if (dices[i].value != dices[i - 1].value)
-    {
-      count = 1;
-    }
-  }
-
   return 0;
 }
 
-uint8_t cup_get_sstraight(Cup* target)
-{
-  if (!target || !target->dices || target->count < 4)
-    return 0;
-
-  cup_sort(target);
-
-  Dice* dices = target->dices;
-  uint8_t count = 1;
-
-  for (size_t i = 1; i < target->count; i++)
-  {
-    if (dices[i].value == dices[i - 1].value + 1)
-    {
-      count++;
-      if (count == 4)
-        return dices[i - count + 1].value;
-    }
-    else if (dices[i].value != dices[i - 1].value)
-    {
-      count = 1;
-    }
-  }
-
-  return 0;
-}
-
-bool cup_get_full_house(Cup* target)
+bool cup_get_full_house(const Cup* target)
 {
   if (!target || !target->dices || target->faces == 0 ||
       target->count < 5)

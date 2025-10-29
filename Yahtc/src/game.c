@@ -112,6 +112,7 @@ void game_round(State* target, MenuHandler* menu)
            target->rerolls_left-- > 0);
 
   target->current_player->score += score_evaluate(
+      target->rules,
       current_hand,
       target->cup,
       target->current_player->score_sheet);
