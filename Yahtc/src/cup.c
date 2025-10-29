@@ -5,6 +5,39 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+void cup_toggle_lock(Cup* target, size_t dice_i)
+{
+  if (!target || !target->dices || dice_i < 0 ||
+      dice_i > target->count - 1)
+  {
+    return;
+  }
+
+  target->dices[dice_i].locked =
+      !target->dices[dice_i].locked;
+}
+
+bool cup_get_repeted(const Cup* target, size_t times)
+{
+  if (!target || !target->dices || times < 1)
+    return false;
+
+  size_t freq_table[256] = {0};
+
+  for (uint8_t i = 0; i < target->count; i++)
+  {
+    freq_table[target->dices[i].value]++;
+  }
+
+  for (uint8_t i = 1; i < target->count; i++)
+  {
+    if (freq_table[i] > times)
+      return true;
+  }
+
+  return false;
+}
+
 bool cup_get_all_equal(const Cup* target)
 {
   if (!target || !target->dices)
@@ -54,8 +87,9 @@ uint8_t cup_get_straight(const Cup* target, uint8_t s_count)
   if (!target || !target->dices || target->count < s_count)
     return 0;
 
-  Dice* dices = target->dices;
-  uint8_t count = 1;
+  // Dice* dices = target->dices;
+  // uint8_t count = 1;
+  //
 
   return 0;
 }
