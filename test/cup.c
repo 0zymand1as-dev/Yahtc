@@ -44,29 +44,42 @@ int main(void)
     // solo '\n')
     if (input[0] != '\n')
     {
-      // Cambio clave: separar por espacios, comas, tabs y
-      // newlines
-      char* token = strtok(input, " ,\t\n");
-      while (token != NULL)
+      // Verificar comandos especiales
+      if (input[0] == 'u' || input[0] == 'U')
       {
-        // Convertir a entero
-        int dice_index = atoi(token);
-
-        // Verificar si el índice es válido (asumiendo 5
-        // dados: 0-4)
-        if (dice_index >= 0 && dice_index < 5)
+        cup_unlock_all(cup);
+        printf("Unlocked all dice\n");
+      }
+      else if (input[0] == 'l' || input[0] == 'L')
+      {
+        cup_lock_all(cup);
+        printf("Locked all dice\n");
+      }
+      else
+      {
+        // Separar por espacios, comas, tabs y newlines
+        char* token = strtok(input, " ,\t\n");
+        while (token != NULL)
         {
-          cup_toggle_lock(cup, dice_index);
-          printf("Toggled lock on dice %d\n", dice_index);
-        }
-        else
-        {
-          printf(
-              "Invalid index: %d (must be 0-4)\n",
-              dice_index);
-        }
+          // Convertir a entero
+          int dice_index = atoi(token);
 
-        token = strtok(NULL, " ,\t\n");
+          // Verificar si el índice es válido (asumiendo 5
+          // dados: 0-4)
+          if (dice_index >= 0 && dice_index < 5)
+          {
+            cup_toggle_lock(cup, dice_index);
+            printf("Toggled lock on dice %d\n", dice_index);
+          }
+          else
+          {
+            printf(
+                "Invalid index: %d (must be 0-4)\n",
+                dice_index);
+          }
+
+          token = strtok(NULL, " ,\t\n");
+        }
       }
     }
 
@@ -80,7 +93,7 @@ int main(void)
     printf(
         "Repeated four times: %d\n",
         cup_get_repeted(cup, 4));
-    printf("Straight: %d\n", cup_get_straight(cup, 4));
+    printf("Straight of 4: %d\n", cup_get_straight(cup, 4));
     printf("Full house: %d\n", cup_get_full_house(cup));
     printf("\n");
     printf("One: %zu\n", cup_get_value_count(cup, 1));

@@ -29,9 +29,9 @@ bool cup_get_repeted(const Cup* target, size_t times)
     freq_table[target->dices[i].value]++;
   }
 
-  for (uint8_t i = 1; i < target->count; i++)
+  for (size_t i = 1; i <= target->faces; i++)
   {
-    if (freq_table[i] > times)
+    if (freq_table[i] >= times)
       return true;
   }
 
@@ -82,16 +82,37 @@ cup_get_value_count(const Cup* target, uint8_t dice_number)
   return count;
 }
 
-uint8_t cup_get_straight(const Cup* target, uint8_t s_count)
+bool cup_get_straight(const Cup* target, size_t s_count)
 {
   if (!target || !target->dices || target->count < s_count)
-    return 0;
+    return false;
 
-  // Dice* dices = target->dices;
-  // uint8_t count = 1;
-  //
+  size_t freq_table[256] = {0};
 
-  return 0;
+  for (uint8_t i = 0; i < target->count; i++)
+  {
+    freq_table[target->dices[i].value]++;
+  }
+
+  size_t count = 0;
+
+  for (uint8_t i = 1; i <= target->faces; i++)
+  {
+    if (freq_table[i])
+    {
+      count++;
+      if (count >= s_count)
+      {
+        return true;
+      }
+    }
+    else
+    {
+      count = 0;
+    }
+  }
+
+  return false;
 }
 
 bool cup_get_full_house(const Cup* target)

@@ -28,8 +28,7 @@ uint16_t cup_get_total_value(const Cup* target);
 size_t
 cup_get_value_count(const Cup* target, uint8_t dice_number);
 
-uint8_t
-cup_get_straight(const Cup* target, uint8_t s_count);
+bool cup_get_straight(const Cup* target, size_t s_count);
 
 bool cup_get_full_house(const Cup* target);
 
