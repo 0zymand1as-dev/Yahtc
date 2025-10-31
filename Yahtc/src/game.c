@@ -2,6 +2,7 @@
 #include "../include/cup.h"
 #include "../include/errors.h"
 #include "../include/player.h"
+#include <stdint.h>
 #include <stdio.h>
 
 State* game_init(Rules* rules)
@@ -45,7 +46,7 @@ uint8_t game_sit_player(
       target->table,
       position,
       (Player){.play_menu = menu,
-               .score = 0,
+               .total_score = 0,
                .score_sheet = player_score_sheet});
 }
 
@@ -101,6 +102,7 @@ void game_round(State* target, MenuHandler* menu)
 {
   HandSelectionHandler* play_menu =
       target->current_player->play_menu;
+
   enum Hands current_hand;
 
   do
@@ -108,14 +110,28 @@ void game_round(State* target, MenuHandler* menu)
     cup_throw(target->cup);
     current_hand = play_menu->function(
         target, target->cup, play_menu->info);
-  } while (current_hand == NONE &&
-           target->rerolls_left-- > 0);
+  } while (target->rerolls_left-- > 0 &&
+           current_hand == NONE);
 
-  target->current_player->score += score_evaluate(
+  uint8_t result = score_evaluate(
       target->rules,
       current_hand,
       target->cup,
       target->current_player->score_sheet);
+
+  if (result == UINT8_MAX)
+  {
+    apierr(
+        "player.play_menu function didn't return a valid "
+        "value after rerolls\n");
+  }
+
+  Player* current_player = target->current_player;
+  ScoreSheet* score_sheet = current_player->score_sheet;
+
+  current_player->total_score =
+      score_sheet->lower_sum + score_sheet->upper_sum +
+      score_sheet->bonus + score_sheet->yahtzee_bonus;
 
   if (menu)
     menu->function(target, menu->info);
@@ -134,7 +150,7 @@ bool game_done(State* target, MenuHandler* menu)
 
   for (uint8_t i = 0; i < target->rules->players_count; i++)
   {
-    if (target->table->players[i].score >
+    if (target->table->players[i].total_score >
         target->rules->winner_score)
     {
       if (menu)

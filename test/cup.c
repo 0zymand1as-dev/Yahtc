@@ -23,6 +23,8 @@ int main(void)
   printf("  - Press Enter alone to throw all dice\n");
   printf("  - Type 'q' and press Enter to quit\n\n");
 
+  bool sort_dices = false;
+
   char input[256];
   while (1)
   {
@@ -55,6 +57,11 @@ int main(void)
         cup_lock_all(cup);
         printf("Locked all dice\n");
       }
+      else if (input[0] == 's' || input[0] == 'S')
+      {
+        printf("Sorting dices...\n");
+        sort_dices = true;
+      }
       else
       {
         // Separar por espacios, comas, tabs y newlines
@@ -85,6 +92,10 @@ int main(void)
 
     printf("Throwing...\n");
     cup_throw(cup);
+
+    if (sort_dices)
+      cup_sort(cup);
+
     cup_print(cup);
     printf("Total value: %d\n", cup_get_total_value(cup));
 
@@ -103,6 +114,8 @@ int main(void)
     printf("Five: %zu\n", cup_get_value_count(cup, 5));
     printf("Six: %zu\n", cup_get_value_count(cup, 6));
     printf("\n");
+
+    sort_dices = false;
   }
 
   printf("Game ended.\n");

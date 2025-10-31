@@ -18,6 +18,9 @@ typedef struct Rules
   uint8_t dices_faces;
   uint8_t sstraight_count;
   uint8_t lstraight_count;
+  uint8_t upper_bonus_req;
+  uint8_t upper_bonus_amo;
+  uint8_t extra_yahtzee_bonus;
 } Rules;
 
 typedef struct State

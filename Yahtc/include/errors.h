@@ -4,4 +4,6 @@
 
 void memerr(const char* error);
 
+void apierr(const char* error_message);
+
 #endif // ERRORS_H

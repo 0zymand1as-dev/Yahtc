@@ -20,8 +20,8 @@ typedef struct HandSelectionHandler
 
 typedef struct Player
 {
+  uint16_t total_score;
   HandSelectionHandler* play_menu;
-  uint16_t score;
   ScoreSheet* score_sheet;
 } Player;
 

@@ -87,11 +87,14 @@ bool cup_get_straight(const Cup* target, size_t s_count)
   if (!target || !target->dices || target->count < s_count)
     return false;
 
-  size_t freq_table[256] = {0};
+  uint8_t freq_table[256] = {0};
 
   for (uint8_t i = 0; i < target->count; i++)
   {
-    freq_table[target->dices[i].value]++;
+    // Using 1 instead "++" optimize 3 lines of asm
+    // ... 
+    // Oh nevermind, i was using the -O0 flag 
+    freq_table[target->dices[i].value] = 1;
   }
 
   size_t count = 0;
@@ -130,11 +133,14 @@ bool cup_get_full_house(const Cup* target)
 
   bool has_three = false, has_two = false;
 
+  size_t six_percent = target->count * 0.60;
+  size_t four_percent = target->count * 0.40;
+
   for (size_t i = 1; i <= target->faces; i++)
   {
-    if (freq_table[i] == 3)
+    if (freq_table[i] == six_percent)
       has_three = true;
-    else if (freq_table[i] == 2)
+    else if (freq_table[i] == four_percent)
       has_two = true;
   }
 
