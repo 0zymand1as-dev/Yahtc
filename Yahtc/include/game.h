@@ -21,6 +21,10 @@ typedef struct Rules
   uint8_t upper_bonus_req;
   uint8_t upper_bonus_amo;
   uint8_t extra_yahtzee_bonus;
+  uint8_t full_house_points;
+  uint8_t sstraight_points;
+  uint8_t lstraight_points;
+  uint8_t yahtzee_points;
 } Rules;
 
 typedef struct State

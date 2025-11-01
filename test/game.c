@@ -9,14 +9,10 @@
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
 void clear_screen(void);
-
 void print_cup(const Cup* cup);
-
 void print_scoresheet(const Player* player);
-
 void handle_game_state_change(
     const State* state, void* info);
-
 enum Hands handle_player_turn(
     const State* state, Cup* cup, void* player_name);
 
@@ -35,10 +31,7 @@ typedef struct
   bool* quit_flag;
 } PlayerMenuInfo;
 
-int
-
-main(void)
-
+int main(void)
 {
 
   srand(time(NULL));
@@ -58,7 +51,11 @@ main(void)
       .lstraight_count = 5,
       .upper_bonus_req = 63,
       .upper_bonus_amo = 35,
-      .extra_yahtzee_bonus = 100};
+      .extra_yahtzee_bonus = 100,
+      .full_house_points = 25,
+      .sstraight_points = 30,
+      .lstraight_points = 40,
+      .yahtzee_points = 50};
 
   // Setup the menu info structs for each player
 
@@ -70,58 +67,45 @@ main(void)
 
   HandSelectionHandler playerA_menu = {
       .function = handle_player_turn,
-
       .info = &playerA_info};
 
   HandSelectionHandler playerB_menu = {
       .function = handle_player_turn,
-
       .info = &playerB_info};
 
   MenuHandler game_menu = {
       .function = handle_game_state_change,
-
       .info = "Yahtzee Game"};
 
   State* game = game_init(&rules);
 
   game_sit_player(game, 0, &playerA_menu);
-
   game_sit_player(game, 1, &playerB_menu);
 
   game_start(game, &game_menu);
 
   while (!game_done(game, NULL) && !should_quit)
-
   {
-
     game_round(game, NULL);
 
     if (should_quit)
-
       break;
 
     game_next(game, &game_menu);
   }
 
   if (should_quit)
-
   {
-
     printf("\nQuitting game...\n");
   }
-
   else
-
   {
-
     game_end(game, &game_menu);
   }
 
   game_close(game);
 
   printf("Game finished. Thanks for playing!\n");
-
   return EXIT_SUCCESS;
 }
 
@@ -334,6 +318,7 @@ void print_cup(const Cup* cup)
       "󰇍 ",
       "󰇎 ",
       "󰇏 "};
+
   const char* locked_dice[] = {
       "",
       "󱅊 ",
@@ -343,7 +328,7 @@ void print_cup(const Cup* cup)
       "󱅎 ",
       "󱅏 "};
 
-  printf("Your Dice:\n");
+  printf("Your Dices:\n");
   for (size_t i = 0; i < cup->count; i++)
   {
     uint8_t val = cup->dices[i].value;

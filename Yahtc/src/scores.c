@@ -24,7 +24,9 @@ uint8_t score_evaluate(
                             // select yahtzee
   {
     if (target->hands[YAHTZEE] ==
-        50) // If already got a yahtzee, get a yahtzee bonus
+        rules->yahtzee_points) // If already got a
+                               // yahtzee, get a yahtzee
+                               // bonus
     {
       target->yahtzee_bonus += rules->extra_yahtzee_bonus;
       joker_active = true;
@@ -95,8 +97,9 @@ uint8_t score_evaluate(
   }
   case FULL_HOUSE:
   {
-    score =
-        (cup_get_full_house(cup) || joker_active) ? 25 : 0;
+    score = (cup_get_full_house(cup) || joker_active)
+                ? rules->full_house_points
+                : 0;
     target->hands[selection] = score;
     target->lower_sum += score;
     break;
@@ -106,7 +109,7 @@ uint8_t score_evaluate(
     score =
         (cup_get_straight(cup, rules->sstraight_count) ||
          joker_active)
-            ? 30
+            ? rules->sstraight_points
             : 0;
     target->hands[selection] = score;
     target->lower_sum += score;
@@ -117,7 +120,7 @@ uint8_t score_evaluate(
     score =
         (cup_get_straight(cup, rules->lstraight_count) ||
          joker_active)
-            ? 40
+            ? rules->lstraight_points
             : 0;
     target->hands[selection] = score;
     target->lower_sum += score;
@@ -127,7 +130,7 @@ uint8_t score_evaluate(
   {
     if (yahtzee)
     {
-      score = 50;
+      score = rules->yahtzee_points;
       target->yahtzees++;
     }
     target->hands[selection] = score;
