@@ -29,7 +29,7 @@ enum Hands
 
 typedef struct ScoreSheet
 {
-  uint8_t* hands;
+  uint8_t hands[HANDS_COUNT];
   uint16_t upper_sum;
   uint16_t lower_sum;
   uint8_t bonus;

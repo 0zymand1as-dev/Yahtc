@@ -158,28 +158,28 @@ uint8_t score_evaluate(
 ScoreSheet* score_init(void)
 {
   ScoreSheet* new_score_sheet =
-      (ScoreSheet*)calloc(1, sizeof(ScoreSheet));
+      (ScoreSheet*)malloc(sizeof(ScoreSheet));
 
   if (!new_score_sheet)
     memerr("score sheet");
-
-  new_score_sheet->hands =
-      (uint8_t*)malloc(sizeof(uint8_t) * HANDS_COUNT);
-
-  if (!new_score_sheet->hands)
-    memerr("hands for score sheet");
 
   for (uint8_t i = 0; i < HANDS_COUNT; i++)
   {
     new_score_sheet->hands[i] = UINT8_MAX; // 255 I think
   }
 
+  new_score_sheet->bonus = 0;
+  new_score_sheet->upper_sum = 0;
+  new_score_sheet->lower_sum = 0;
+  new_score_sheet->bonus = 0;
+  new_score_sheet->yahtzee_bonus = 0;
+  new_score_sheet->yahtzees = 0;
+
   return new_score_sheet;
 }
 
 void score_close(ScoreSheet* target)
 {
-  free(target->hands);
   free(target);
   return;
 }
