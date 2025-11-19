@@ -21,7 +21,7 @@ DEBUG_FLAGS = -Wall -Wextra -Wpedantic -Werror \
               # -fsanitize=address,undefined,leak \
 
 
-CFLAGS = -I$(INCLUDE_DIR)
+CFLAGS = -I$(INCLUDE_DIR) -lncurses
 
 .PHONY: all run clean test help
 
