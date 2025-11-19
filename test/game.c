@@ -25,19 +25,20 @@ enum Hands handle_player_turn(
 #include <string.h>
 
 // Contains all the info needed by the player menu callback
+// The menu needs to display their name, hence their name,
+// While handling a player turn, if they decide to quit, other functions need to know that to clean up the game. Easier tthan return a status code or smthing like that
 typedef struct
 {
   const char* name;
   bool* quit_flag;
 } PlayerMenuInfo;
 
+
 int main(void)
 {
-
   srand(time(NULL));
 
   // A single, local quit flag for the entire game.
-
   bool should_quit = false;
 
   Rules rules = {
@@ -59,6 +60,8 @@ int main(void)
 
   // Setup the menu info structs for each player
 
+  // Demo playerrs
+  // Normally the quit flag could be per player, but with 2 it doesnt matter
   PlayerMenuInfo playerA_info = {
       .name = "Frederico", .quit_flag = &should_quit};
 
@@ -69,6 +72,7 @@ int main(void)
       .function = handle_player_turn,
       .info = &playerA_info};
 
+  // Pretty much a call back that any arbitrary code can use to handle a player's turn
   HandSelectionHandler playerB_menu = {
       .function = handle_player_turn,
       .info = &playerB_info};
