@@ -100,6 +100,9 @@ void game_next(State* target, MenuHandler* menu)
 
 void game_round(State* target, MenuHandler* menu)
 {
+  // This gets the menu from the state rather than from parameters
+  // The parameter is just there incase you want to do something special after a players turn?
+  // todo refactor out the menu parameter
   HandSelectionHandler* play_menu =
       target->current_player->play_menu;
 
